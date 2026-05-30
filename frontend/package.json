@@ -10,14 +10,27 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.100.14",
+    "@tanstack/react-table": "^8.21.3",
+    "axios": "^1.16.1",
+    "dayjs": "^1.11.21",
+    "flowbite": "^4.0.2",
+    "lucide-react": "^1.17.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.76.1",
+    "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.16.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.11"
   }

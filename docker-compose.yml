@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgrespassword
-      POSTGRES_DB: coworking
+      POSTGRES_DB: booking_db
     ports:
       - "5432:5432"
     volumes:
@@ -16,7 +16,7 @@ services:
     networks:
       - coworking-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d coworking"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d booking_db"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -48,7 +48,7 @@ services:
     environment:
       - PORT=5000
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgrespassword@db:5432/coworking
+      - DATABASE_URL=postgresql://postgres:postgrespassword@db:5432/booking_db
       - REDIS_URL=redis://redis:6379
     volumes:
       - ./backend:/app

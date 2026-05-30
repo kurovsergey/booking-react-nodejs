@@ -1,6 +1,6 @@
 # Технологический стек проекта:
-    - Backend: Node.js (TypeScript)
-    - Frontend: React (TypeScript)
+    - Backend: Node.js (TypeScript), NestJS, TypeORM
+    - Frontend: React (TypeScript), Next.js
     - Базы данных и кеш: PostgreSQL + Redis.
     - Docker
 

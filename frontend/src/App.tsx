@@ -1,33 +1,62 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuthStore } from './stores/authStore';
+import { Toaster } from 'react-hot-toast';
+
+// Layouts & Guards
+import { AuthLayout } from './layouts/AuthLayout';
+import { DashboardLayout } from './layouts/DashboardLayout';
+import { PrivateRoute } from './components/guards/PrivateRoute';
+import { PublicRoute } from './components/guards/PublicRoute';
+
+// Pages
+import { Login } from './pages/auth/Login';
+import { Register } from './pages/auth/Register';
+import { VerifyAccount } from './pages/auth/VerifyAccount';
+import { ForgotPassword } from './pages/auth/ForgotPassword';
+import { ResetPassword } from './pages/auth/ResetPassword';
+import { UserDashboard } from './pages/dashboard/UserDashboard';
+import { AdminDashboard } from './pages/dashboard/AdminDashboard';
 
 function App() {
-  const [backendStatus, setBackendStatus] = useState<string>('Connecting...')
+  const { restoreSession } = useAuthStore();
 
   useEffect(() => {
-    fetch('/api/health')
-      .then((res) => res.json())
-      .then((data) => setBackendStatus(`Connected (Backend time: ${data.timestamp})`))
-      .catch(() => setBackendStatus('Failed to connect to backend api'))
-  }, [])
+    restoreSession();
+  }, [restoreSession]);
 
   return (
-    <div style={{
-      fontFamily: 'system-ui, sans-serif',
-      padding: '2rem',
-      backgroundColor: '#121212',
-      color: '#ffffff',
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-      <h1>Coworking Booking Platform</h1>
-      <p style={{ fontSize: '1.2rem', color: '#888' }}>
-        Backend Status: <span style={{ color: backendStatus.startsWith('Connected') ? '#4caf50' : '#f44336' }}>{backendStatus}</span>
-      </p>
-    </div>
-  )
+    <BrowserRouter>
+      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+        {/* Public Auth Routes */}
+        <Route element={<PublicRoute />}>
+          <Route element={<AuthLayout />}>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="verify-account" element={<VerifyAccount />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
+          </Route>
+        </Route>
+
+        {/* Private Main Routes */}
+        <Route element={<PrivateRoute />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="dashboard" element={<UserDashboard />} />
+            
+            <Route element={<PrivateRoute roles={['admin']} />}>
+              <Route path="admin" element={<AdminDashboard />} />
+            </Route>
+          </Route>
+        </Route>
+
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
